@@ -2,6 +2,7 @@ import { Avatar, Divider, Flex, Text } from "@chakra-ui/react";
 import { useState } from "react"
 import { BsThreeDots } from "react-icons/bs";
 import Actions from "./Actions";
+import React from 'react'
 
 const Comment = ({ userAvatar, createdAt, comment, username, likes }) => {
     const [liked, setLiked] = useState(false);

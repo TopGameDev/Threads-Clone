@@ -3,6 +3,7 @@ import { useToast } from '@chakra-ui/react'
 import { Avatar } from "@chakra-ui/avatar"
 import { BsInstagram } from "react-icons/bs"
 import { CgMoreO } from "react-icons/cg"
+import React from 'react'
 
 const UserHeader = () => {
     const toast = useToast()

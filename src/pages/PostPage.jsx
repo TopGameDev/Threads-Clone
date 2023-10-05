@@ -4,6 +4,7 @@ import { BsThreeDots } from "react-icons/bs";
 import Actions from "../components/Actions";
 import { useState } from "react";
 import Comment from "../components/Comment";
+import React from 'react'
 
 const PostPage = () => {
   const [liked, setLiked] = useState(false);
