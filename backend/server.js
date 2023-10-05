@@ -16,12 +16,16 @@ const app = express();
 // PORT variable that pulls the data from the .env or runs the default 5555 Port if no data in .env
 const PORT = process.env.PORT || 5555;
 
+
+//Middle Wares
 // To parse JSON data in the req.body
 app.use(express.json());
 // To parse form data in the req.body - extended: true is so we can parse through nested req.body information like for Friends or Follower/Following Schema Sections.
 app.use(express.urlencoded({ extended: true }));
 // This is for the jwt token we will create for each user 
 app.use(cookieParser());
+
+
 
 // ROUTES
 app.use("/api/users", userRoutes);
