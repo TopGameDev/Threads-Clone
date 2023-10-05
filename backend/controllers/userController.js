@@ -76,13 +76,50 @@ const loginUser = async (req, res) => {
 };
 
 const logoutUser = async (req, res) => {
-    try{
-        res.cookie("jwt", "", {maxAge: 1});
-        res.status(200).json({ message: "User logged out successfully" });
-    } catch (error) {
-        res.status(500).json({ message: error.message });
-        console.log("Error: in signupUser: ", error.message);
-    }
+  try {
+    res.cookie("jwt", "", { maxAge: 1 });
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log("Error: in logoutUser: ", error.message);
+  }
 };
 
-export { signupUser, loginUser, logoutUser };
+const followUnFollowUser = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userToFollow = await User.findById(id);
+    const currentUser = await User.findById(req.user._id);
+
+    if (id === req.user._id) {
+      return res
+        .status(400)
+        .json({ message: "You cannot follow/unfollow yourself" });
+    }
+
+    if (!userToFollow || !currentUser) {
+      return res.status(400).json({ message: "User not found" });
+    }
+
+    const isFollowing = currentUser.following.includes(id);
+
+    if (isFollowing) {
+      // Unfollow user
+      // Modify current user's following: Array, modify followers: Array of userToFollow
+      await User.findByIdAndUpdate(req.user._id, { $pull: { following: id } });
+      await User.findByIdAndUpdate(id, { $pull: { followers: req.user._id } });
+      
+      res.status(200).json({ message: "User unfollowed successfully" })
+    } else {
+      // Follow User
+      await User.findByIdAndUpdate(req.user._id, { $push: { following: id } });
+      await User.findByIdAndUpdate(id, { $push: { followers: req.user._id } });
+      res.status(200).json({ message: "User followed successfully" })
+    }
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+    console.log("Error: in followUnFollowUser: ", error.message);
+  }
+};
+
+export { signupUser, loginUser, logoutUser, followUnFollowUser };

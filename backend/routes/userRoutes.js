@@ -1,5 +1,6 @@
 import express from "express";
-import { signupUser, loginUser, logoutUser } from "../controllers/userController.js";
+import { signupUser, loginUser, logoutUser, followUnFollowUser } from "../controllers/userController.js";
+import { protectRoute } from "../middleware/protectRoute.js";
 
 // create instance of express for routing
 const router = express.Router();
@@ -8,6 +9,7 @@ const router = express.Router();
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
+router.post("/follow/:id", protectRoute,followUnFollowUser);
 
 
 
