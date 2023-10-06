@@ -13,7 +13,6 @@ import {
   Text,
   useColorModeValue,
   Link,
-  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
@@ -54,7 +53,7 @@ export default function SignupCard() {
       localStorage.setItem("user-threads", JSON.stringify(data));
       setUser(data);
     } catch (error) {
-      console.log(error);
+      showToast("Error", error, "error");
     }
   };
 
