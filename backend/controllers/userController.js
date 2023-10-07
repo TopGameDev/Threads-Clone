@@ -3,11 +3,8 @@ import bcrypt from "bcryptjs";
 import generateTokenAndSetCookie from "../utils/helpers/generateTokenAndSetCookie.js";
 import { useNavigate } from "react-router-dom";
 import { v2 as cloudinary } from "cloudinary";
-import useShowToast from "../../src/hooks/useShowToast.js";
-import { useToast } from "@chakra-ui/react";
 
 const getUserProfile = async (req, res) => {
-  const useToast = useShowToast()
   const { username } = req.params;
   try {
     const user = await User.findOne({ username })

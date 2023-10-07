@@ -8,13 +8,13 @@ const router = express.Router();
 // GET
 router.get("/profile/:username", getUserProfile)
 
+router.put("/update/:id", protectRoute, updateUser);
 // POST
 // /signup post route for signing up a user which runs the signupUser function when used.
 router.post("/signup", signupUser);
 router.post("/login", loginUser);
 router.post("/logout", logoutUser);
 router.post("/follow/:id", protectRoute, followUnFollowUser);
-router.put("/update/:id", protectRoute, updateUser);
 
 
 

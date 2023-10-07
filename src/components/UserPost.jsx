@@ -4,8 +4,7 @@ import { Avatar } from "@chakra-ui/avatar";
 import UserHeader from "./UserHeader";
 import { BsThreeDots } from "react-icons/bs";
 import Actions from "./Actions";
-import { useState } from "react";
-import React from 'react'
+import { useState, React } from "react";
 
 const UserPost = ({ postImg, postTitle, likes, replies}) => {
     const [liked, setLiked] = useState(false);

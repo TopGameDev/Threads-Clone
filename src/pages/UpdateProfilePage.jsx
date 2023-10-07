@@ -27,15 +27,17 @@ export default function updateProfilePage() {
     bio: user.bio,
     password: "",
   });
-  const navigate = useNavigate()
-
   const showToast = useShowToast();
-
   const fileRef = useRef(null);
-
   const { handleImageChange, imgUrl } = usePreviewImage();
+  const [updating, setUpdating] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
+    if(updating){
+      return;
+    }
+    setUpdating(true);
     try {
       const res = await fetch(`/api/users/update/${user._id}`, {
         method: "PUT",
@@ -51,9 +53,11 @@ export default function updateProfilePage() {
       }
       setUser(data)
       localStorage.setItem("user-threads", JSON.stringify(data));
-      navigate("/")
+      navigate('/')
     } catch (error) {
       showToast("Error", error, "error");
+    } finally {
+      setUpdating(false);
     }
   };
 
@@ -163,6 +167,7 @@ export default function updateProfilePage() {
                 bg: "green.500",
               }}
               type={"submit"}
+              isLoading={updating}
             >
               Submit
             </Button>

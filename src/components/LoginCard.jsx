@@ -14,13 +14,12 @@ import {
   useColorModeValue,
   Link,
 } from "@chakra-ui/react";
-import { useState } from "react";
+import { useState, React } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import { useRecoilState, useSetRecoilState } from "recoil";
 import authScreenAtom from "../atoms/authAtom";
 import useShowToast from "../hooks/useShowToast";
 import userAtom from "../atoms/userAtom";
-import React from "react";
 
 export default function LoginCard() {
   const [showPassword, setShowPassword] = useState(false);

@@ -1,10 +1,10 @@
 import { Button, Container } from "@chakra-ui/react";
 import { Navigate, Route, Routes } from "react-router-dom";
-import Header from "./components/Header";
-import UserPage from "./pages/UserPage";
-import PostPage from "./pages/PostPage";
-import HomePage from "./pages/HomePage";
-import AuthPage from "./pages/AuthPage";
+import Header from "./components/Header.jsx";
+import UserPage from "./pages/UserPage.jsx";
+import PostPage from "./pages/PostPage.jsx";
+import HomePage from "./pages/HomePage.jsx";
+import AuthPage from "./pages/AuthPage.jsx";
 import React from "react";
 import { useRecoilValue } from "recoil";
 import userAtom from "./atoms/userAtom";
