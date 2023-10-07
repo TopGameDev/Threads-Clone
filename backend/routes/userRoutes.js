@@ -6,7 +6,7 @@ import { protectRoute } from "../middleware/protectRoute.js";
 const router = express.Router();
 
 // GET
-router.get("/profile/:username", getUserProfile)
+router.get("/profile/:query", getUserProfile)
 
 router.put("/update/:id", protectRoute, updateUser);
 // POST
