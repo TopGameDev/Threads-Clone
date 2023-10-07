@@ -26,7 +26,7 @@ cloudinary.config({
 
 //Middle Wares
 // To parse JSON data in the req.body
-app.use(express.json());
+app.use(express.json({limit:"50mb"}));
 // To parse form data in the req.body - extended: true is so we can parse through nested req.body information like for Friends or Follower/Following Schema Sections.
 app.use(express.urlencoded({ extended: true }));
 // This is for the jwt token we will create for each user
