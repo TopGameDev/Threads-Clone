@@ -25,7 +25,7 @@ const UserHeader = ({ user }) => {
   const toast = useToast();
   const currentUser = useRecoilValue(userAtom); // this is the logged in user
   const [following, setFollowing] = useState(
-    user.followers.includes(currentUser._id)
+    user.followers.includes(currentUser?._id)
   );
   const showToast = useShowToast();
   const [updating, setUpdating] = useState(false);
@@ -44,12 +44,12 @@ const UserHeader = ({ user }) => {
   };
 
   const handleFollowUnfollow = async () => {
-    if(!currentUser){
-        showToast("Error", "Please login to follow", "error");
-        return;
+    if (!currentUser) {
+      showToast("Error", "Please login to follow", "error");
+      return;
     }
-    if(updating){
-        return;
+    if (updating) {
+      return;
     }
     setUpdating(true);
     try {
@@ -64,13 +64,13 @@ const UserHeader = ({ user }) => {
         showToast("Error", data.error, "error");
         return;
       }
-      
-      if (following){
+
+      if (following) {
         showToast("Success", `Unfollowed ${user.name}`, "success");
-        user.followers.pop(currentUser._id); //remove from followers
+        user.followers.pop(currentUser?._id); //remove from followers
       } else {
         showToast("Success", `followed ${user.name}`, "success");
-        user.followers.push(currentUser._id); // add to followers
+        user.followers.push(currentUser?._id); // add to followers
       }
       setFollowing(!following);
 
@@ -78,7 +78,7 @@ const UserHeader = ({ user }) => {
     } catch (error) {
       showToast("Error", error, "error");
     } finally {
-        setUpdating(false);
+      setUpdating(false);
     }
   };
 
@@ -127,12 +127,12 @@ const UserHeader = ({ user }) => {
       </Flex>
       <Text>{user.bio}</Text>
 
-      {currentUser._id === user._id && (
+      {currentUser?._id === user._id && (
         <Link as={RouterLink} to="/update">
           <Button size={"sm"}>Update Profile</Button>
         </Link>
       )}
-      {currentUser._id !== user._id && (
+      {currentUser?._id !== user._id && (
         <Button size={"sm"} onClick={handleFollowUnfollow} isLoading={updating}>
           {following ? "Unfollow" : "Follow"}
         </Button>

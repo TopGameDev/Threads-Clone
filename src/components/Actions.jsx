@@ -21,10 +21,10 @@ import { useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
 
 const Actions = ({ post: post_ }) => {
+  const [post, setPost] = useState(post_);
   const user = useRecoilValue(userAtom);
   const [liked, setLiked] = useState(post_.likes.includes(user?._id));
   const showToast = useShowToast();
-  const [post, setPost] = useState(post_);
   const [isLiking, setIsLiking] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure()
