@@ -17,20 +17,19 @@ import {
 import { useState } from "react";
 import React from "react";
 import useShowToast from "../hooks/useShowToast";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import postsAtom from "../atoms/postsAtom";
 
-const Actions = ({ post: post_ }) => {
-  const [post, setPost] = useState(post_);
+const Actions = ({ post }) => {
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const user = useRecoilValue(userAtom);
-  const [liked, setLiked] = useState(post_.likes.includes(user?._id));
+  const [liked, setLiked] = useState(post.likes.includes(user?._id));
   const showToast = useShowToast();
   const [isLiking, setIsLiking] = useState(false);
   const [isReplying, setIsReplying] = useState(false);
-  const { isOpen, onOpen, onClose } = useDisclosure()
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [reply, setReply] = useState("");
-
-
 
   const handleLikeUnlike = async () => {
     if (!user) {
@@ -62,10 +61,25 @@ const Actions = ({ post: post_ }) => {
 
       if (!liked) {
         // add the id of the current user to the post.likes array
-        setPost({ ...post, likes: [...post.likes, user._id] });
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return { ...p, likes: [...p.likes, user._id] };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       } else {
         // remove the id of the current user from the post.likes array
-        setPost({ ...post, likes: post.likes.filter((id) => id !== user._id) });
+        const updatedPosts = posts.map((p) => {
+          if (p._id === post._id) {
+            return {
+              ...post,
+              likes: post.likes.filter((id) => id !== user._id),
+            };
+          }
+          return p;
+        });
+        setPosts(updatedPosts);
       }
 
       setLiked(!liked);
@@ -79,33 +93,43 @@ const Actions = ({ post: post_ }) => {
   };
 
   const handleReply = async () => {
-    if(!user){
-      return showToast("Error", "You must be logged in to make a comment", "error");
-    };
-    setIsReplying(true)
-    try{
+    if (!user) {
+      return showToast(
+        "Error",
+        "You must be logged in to make a comment",
+        "error"
+      );
+    }
+    setIsReplying(true);
+    try {
       const res = await fetch("/api/posts/reply/" + post._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ text: reply })
-      })
-      const data = await res.json()
-      if(data.error){
-        return showToast("Error", data.error, "error")
+        body: JSON.stringify({ text: reply }),
+      });
+      const data = await res.json();
+      if (data.error) {
+        return showToast("Error", data.error, "error");
       }
-      setPost({...post, replies: [...post.replies, data.reply]})
-      showToast("Success", "Comment made Successfully", "success")
-      console.log(data)
+      const updatedPosts = posts.map((p) => {
+        if (p._id === post._id) {
+          return { ...p, replies: [...p.replies, data] };
+        }
+        return p;
+      });
+      setPosts(updatedPosts);
+      showToast("Success", "Comment made Successfully", "success");
+      console.log(data);
       onClose();
       setReply("");
-    }catch(error){
+    } catch (error) {
       return showToast("Error", error.message, "error");
     } finally {
-      setIsReplying(false)
+      setIsReplying(false);
     }
-  }
+  };
   return (
     <Flex flexDirection={"column"}>
       <Flex gap={3} my={2} onClick={(e) => e.preventDefault()}>
@@ -160,17 +184,15 @@ const Actions = ({ post: post_ }) => {
         </Text>
       </Flex>
 
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-      >
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader mb={3}></ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl>
-              <Input placeholder="What do you want to say?" 
+              <Input
+                placeholder="What do you want to say?"
                 value={reply}
                 onChange={(e) => setReply(e.target.value)}
               />
@@ -178,7 +200,10 @@ const Actions = ({ post: post_ }) => {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" size={"sm"} mr={3}
+            <Button
+              colorScheme="blue"
+              size={"sm"}
+              mr={3}
               isLoading={isReplying}
               onClick={handleReply}
             >

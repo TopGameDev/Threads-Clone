@@ -6,7 +6,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  HStack,
   Stack,
   Button,
   Heading,
@@ -43,7 +42,6 @@ export default function LoginCard() {
         body: JSON.stringify(formData),
       });
       const data = await res.json();
-      console.log(data);
 
       if (data.error) {
         showToast("Error", data.error, "error");

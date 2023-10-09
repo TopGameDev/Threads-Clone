@@ -8,9 +8,8 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import { Avatar } from "@chakra-ui/avatar";
-import { BsThreeDots } from "react-icons/bs";
 import Actions from "../components/Actions";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import Comment from "../components/Comment";
 import React from "react";
 import useGetUserProfile from "../hooks/useGetUserProfile";
@@ -18,19 +17,22 @@ import useShowToast from "../hooks/useShowToast";
 import { useNavigate, useParams } from "react-router-dom";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { formatDistanceToNow } from "date-fns";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import userAtom from "../atoms/userAtom";
+import postsAtom from "../atoms/postsAtom";
 
 const PostPage = () => {
   const { user, loading } = useGetUserProfile();
-  const [post, setPost] = useState(null);
   const showToast = useShowToast();
   const { pid } = useParams();
   const currentUser = useRecoilValue(userAtom);
+  const [posts, setPosts] = useRecoilState(postsAtom);
   const navigate = useNavigate();
 
+  const currentPosts = posts[0]
   useEffect(() => {
     const getPost = async () => {
+      setPosts([])
       try {
         const res = await fetch(`/api/posts/${pid}`);
         const data = await res.json();
@@ -38,15 +40,14 @@ const PostPage = () => {
           showToast("Error", error.message, "error");
           return;
         }
-        console.log(data);
-        setPost(data);
+        setPosts([data]);
       } catch (error) {
         showToast("Error", error.message, "error");
       }
     };
 
     getPost();
-  }, [pid, showToast]);
+  }, [pid, showToast, setPosts]);
 
   if (!user && loading) {
     return (
@@ -56,7 +57,7 @@ const PostPage = () => {
     );
   }
 
-  if (!post) {
+  if (!currentPosts) {
     return null;
   }
 
@@ -66,7 +67,7 @@ const PostPage = () => {
         return;
       }
 
-      const res = await fetch(`/api/posts/${post._id}`, {
+      const res = await fetch(`/api/posts/${currentPosts._id}`, {
         method: "DELETE",
       });
       
@@ -101,25 +102,25 @@ const PostPage = () => {
             textAlign={"right"}
             color={"gray.light"}
           >
-            {formatDistanceToNow(new Date(post.createdAt))} ago
+            {formatDistanceToNow(new Date(currentPosts.createdAt))} ago
           </Text>
 
-          {currentUser?._id === post.postedBy && (
+          {currentUser?._id === currentPosts.postedBy && (
             <DeleteIcon size={20} cursor={"pointer"} onClick={handleDeletePost} />
           )}
         </Flex>
       </Flex>
-      <Text my={3}>{post.text}.</Text>
+      <Text my={3}>{currentPosts.text}.</Text>
       <Box
         borderRadius={6}
         overflow={"hidden"}
         border={"1px solid"}
         borderColor={"gray.light"}
       >
-        <Image src={post.img} w={"full"} />
+        <Image src={currentPosts.img} w={"full"} />
       </Box>
       <Flex gap={3} my={3}>
-        <Actions post={post} />
+        <Actions post={currentPosts} />
       </Flex>
       <Divider my={4} />
       <Flex justifyContent={"space-between"}>
@@ -130,11 +131,11 @@ const PostPage = () => {
         <Button>Get</Button>
       </Flex>
       <Divider my={4} />
-      {post.replies.map(reply => (
+      {currentPosts.replies.map(reply => (
         <Comment
         key={reply._id}
         reply={reply}
-        lastReply={reply._id === post.replies[post.replies.length - 1]._id}
+        lastReply={reply._id === currentPosts.replies[currentPosts.replies.length - 1]._id}
       /> 
       ))}
     </>

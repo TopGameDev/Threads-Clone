@@ -6,6 +6,8 @@ import useShowToast from "../hooks/useShowToast";
 import { FiLogOut } from "react-icons/fi"
 import { useNavigate } from "react-router-dom";
 
+// NOT USEING THIS COMPONENT ANYMORE - LOGOUT FUNCTIONALITY IS IN CUSTOM HOOK WHICH IS PASSED INTO HEADER COMPONENT
+
 const LogoutButton = () => {
     const setUser = useSetRecoilState(userAtom);
     const showToast = useShowToast()
@@ -28,7 +30,7 @@ const LogoutButton = () => {
 
         localStorage.removeItem("user-threads");
         setUser(null)
-        navigate("/")
+        navigate("/auth")
     }catch(error){
         showToast("Error", error, "error");
     }
