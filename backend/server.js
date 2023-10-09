@@ -4,6 +4,7 @@ import connectDB from "./db/connectDB.js";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/userRoutes.js";
 import postRoutes from "./routes/postRoutes.js";
+import messageRoutes from "./routes/messageRoutes.js";
 import {v2 as cloudinary} from "cloudinary"
 
 // This is so we can use the variables in .env file
@@ -35,6 +36,7 @@ app.use(cookieParser());
 // ROUTES
 app.use("/api/users", userRoutes);
 app.use("/api/posts", postRoutes);
+app.use("/api/messages", messageRoutes);
 
 // This is telling the app which port to use - which is why we pass in the PORT variable - Then log a message
 app.listen(PORT, () =>
