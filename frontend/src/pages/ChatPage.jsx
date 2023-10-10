@@ -20,6 +20,7 @@ import {
   selectedConversationAtom,
 } from "../atoms/messagesAtom";
 import userAtom from "../atoms/userAtom";
+import { useSocket } from "../context/SocketContext";
 
 const ChatPage = () => {
   const showToast = useShowToast();
@@ -31,6 +32,7 @@ const ChatPage = () => {
   const [searchText, setSearchText] = useState("");
   const [searchingUser, setSearchingUser] = useState(false);
   const currentUser = useRecoilValue(userAtom);
+  const { socket, onlineUsers } = useSocket();
 
   useEffect(() => {
     const getConversations = async () => {
@@ -65,13 +67,15 @@ const ChatPage = () => {
         return;
       }
 
-      const messagingYourself = searchedUser._id === currentUser._id
+      const messagingYourself = searchedUser._id === currentUser._id;
       if (messagingYourself) {
         showToast("Error", "You cannot message yourself", "error");
         return;
       }
 
-      const conversationAlreadyExists = conversations.find((conversation) => conversation.participants[0]._id === searchedUser._id)
+      const conversationAlreadyExists = conversations.find(
+        (conversation) => conversation.participants[0]._id === searchedUser._id
+      );
       if (conversationAlreadyExists) {
         setSelectedConversation({
           _id: conversationAlreadyExists._id,
@@ -94,10 +98,10 @@ const ChatPage = () => {
             _id: searchedUser._id,
             username: searchedUser.username,
             profilePic: searchedUser.profilePic,
-          }
-        ]
-      }
-      setConversations((prevConvs) => [...prevConvs, mockConversation])
+          },
+        ],
+      };
+      setConversations((prevConvs) => [...prevConvs, mockConversation]);
     } catch (error) {
       showToast("Error", error.message, "error");
     } finally {
@@ -180,7 +184,11 @@ const ChatPage = () => {
 
           {!loadingConversations &&
             conversations.map((conversation) => (
-              <Conversation key={conversation._id} conversation={conversation} />
+              <Conversation
+                key={conversation._id}
+                conversation={conversation}
+                isOnline={onlineUsers.includes(conversation.participants[0]._id)}
+              />
             ))}
         </Flex>
         {!selectedConversation._id && (

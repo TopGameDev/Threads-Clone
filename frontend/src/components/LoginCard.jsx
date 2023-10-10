@@ -30,6 +30,9 @@ export default function LoginCard() {
   });
   const showToast = useShowToast();
   const [loading, setLoading] = useState(false)
+  function refreshPage(){ 
+    window.location.reload(); 
+}
 
   const handleLogin = async () => {
     setLoading(true)
@@ -54,6 +57,7 @@ export default function LoginCard() {
       showToast("Error", error, "error");
     } finally {
       setLoading(false)
+      refreshPage();
     }
   };
   return (
@@ -79,8 +83,8 @@ export default function LoginCard() {
               <FormLabel>Username</FormLabel>
               <Input
                 type="text"
-                onChange={(e) => setFormData((formData) => ({...formData, username: e.target.value}))}
                 value={formData.username}
+                onChange={(e) => setFormData((formData) => ({...formData, username: e.target.value}))}
               />
             </FormControl>
             <FormControl id="password" isRequired>
@@ -88,8 +92,8 @@ export default function LoginCard() {
               <InputGroup>
                 <Input
                   type={showPassword ? "text" : "password"}
-                  onChange={(e) => setFormData((formData) => ({...formData, password: e.target.value}))}
                   value={formData.password}
+                  onChange={(e) => setFormData((formData) => ({...formData, password: e.target.value}))}
                 />
                 <InputRightElement h={"full"}>
                   <Button
