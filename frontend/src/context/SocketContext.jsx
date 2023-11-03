@@ -15,7 +15,7 @@ export const SocketContextProvider = ({ children }) => {
   const [onlineUsers, setOnlineUsers] = useState([]);
 
   useEffect(() => {
-    const socket = io("https://threads-backend-5s2k.onrender.com", {
+    const socket = io("http://localhost:4001", {
       query: {
         userId: user?._id,
       },
