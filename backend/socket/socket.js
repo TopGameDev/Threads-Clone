@@ -27,7 +27,7 @@ app.use((req, res, next) => {
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000",
+    origin: "https://threads-frontend-l55c.onrender.com",
     methods: ["GET", "POST"],
   },
 });
