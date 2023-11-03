@@ -30,7 +30,9 @@ export default function LoginCard() {
   });
   const showToast = useShowToast();
   const [loading, setLoading] = useState(false)
-  
+  function refreshPage(){ 
+    window.location.reload(); 
+}
 
   const handleLogin = async () => {
     setLoading(true)
@@ -55,7 +57,7 @@ export default function LoginCard() {
       showToast("Error", error, "error");
     } finally {
       setLoading(false)
-      
+      refreshPage()
     }
   };
   return (
