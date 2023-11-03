@@ -59,17 +59,17 @@ export default function LoginCard() {
     }
   };
   return (
-    <Flex align={"center"} justify={"center"}>
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
-        <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+    <Flex align="center" justify="center">
+      <Stack spacing={8} mx="auto" maxW="lg" py={12} px={6}>
+        <Stack align="center">
+          <Heading fontSize="4xl" textAlign="center">
             Login
           </Heading>
         </Stack>
         <Box
-          rounded={"lg"}
+          rounded="lg"
           bg={useColorModeValue("white", "gray.dark")}
-          boxShadow={"lg"}
+          boxShadow="lg"
           p={8}
           w={{
             base: "full",
@@ -93,9 +93,9 @@ export default function LoginCard() {
                   value={formData.password}
                   onChange={(e) => setFormData((formData) => ({...formData, password: e.target.value}))}
                 />
-                <InputRightElement h={"full"}>
+                <InputRightElement h="full">
                   <Button
-                    variant={"ghost"}
+                    variant="ghost"
                     onClick={() =>
                       setShowPassword((showPassword) => !showPassword)
                     }
@@ -110,7 +110,7 @@ export default function LoginCard() {
                 loadingText="Logging in"
                 size="lg"
                 bg={useColorModeValue("gray.600", "gray.700")}
-                color={"white"}
+                color="white"
                 _hover={{
                   bg: useColorModeValue("gray.700", "gray.800"),
                 }}
@@ -121,10 +121,10 @@ export default function LoginCard() {
               </Button>
             </Stack>
             <Stack pt={6}>
-              <Text align={"center"}>
+              <Text align="center">
                 Don't have an account?{" "}
                 <Link
-                  color={"blue.400"} onClick={() => setAuthScreen("signup")}
+                  color="blue.400" onClick={() => setAuthScreen("signup")}
                 >
                   Sign up
                 </Link>
