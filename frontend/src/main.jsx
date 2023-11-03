@@ -34,7 +34,6 @@ const theme = extendTheme({ config, styles, colors });
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   // React.StrictMode renders every component twice on render - meaning double messages and outputs in console/webpage
-  <React.StrictMode>
     <RecoilRoot>
       <BrowserRouter>
         <ChakraProvider theme={theme}>
@@ -45,5 +44,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         </ChakraProvider>
       </BrowserRouter>
     </RecoilRoot>
-  </React.StrictMode>
 );
