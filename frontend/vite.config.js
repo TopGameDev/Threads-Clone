@@ -12,6 +12,7 @@ export default defineConfig({
         target: "https://threads-backend-5s2k.onrender.com",
         changeOrigin: true,
         secure: false,
+        AccessControlAllowOrigin: true
       },
     },
   },
